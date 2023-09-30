@@ -16,14 +16,13 @@ def make_ranks(substr_rank, n):
     return rank
 
 def suffix_array(T):
+    #print(type(T))
     n = len(T)
     substr_rank = []
-
+    #print(type(substr_rank))
     for i in range(n):
         substr_rank.append(SubstrRank(ord(T[i]), ord(T[i + 1]) if i < n-1 else 0, i))
-
     substr_rank.sort(key=lambda sr: (sr.left_rank, sr.right_rank))
-
     l = 2
     while l < n:
         rank = make_ranks(substr_rank, n)
@@ -37,8 +36,15 @@ def suffix_array(T):
         substr_rank.sort(key=lambda sr: (sr.left_rank, sr.right_rank))
 
     SA = [substr_rank[i].index for i in range(n)]
-
+    print(type(SA))
     return SA
 
-SA = suffix_array("mississippi")
-print(SA)
+filename = "Dracula.txt"
+with open(filename, encoding="utf8") as f:
+    lines = f.read()
+
+#SA = suffix_array("banana")
+#print(len(SA))
+#SA = suffix_array(lines)
+#print(SA)
+print(len(lines))
