@@ -70,6 +70,32 @@ std::vector<int> suffix_array(std::string T){
     return SA;
 }
 
+int search_substr(std::string patron, std::string texto, std::vector<int> &suffray, int N){
+    int M;
+    int L = 0;
+    int R = N-1;
+    std::string subTexto;
+    int tamanoPat = patron.length();
+    while (L<=R)
+    {
+        M = (R+L)/2;
+        subTexto = texto.substr(suffray[M],tamanoPat);
+        if(patron == subTexto){
+            //std::cout << subTexto << M << std::endl;
+            return suffray[M];
+        }
+        else if(subTexto < patron){
+            L = M + 1;
+        }
+        else{
+            R = M - 1; 
+        }
+    }
+
+    return -1;
+    
+}
+
 
 int main(){
 
@@ -90,18 +116,22 @@ int main(){
     }
     std::vector<int> SA;
 
-    //SA = suffix_array(texto);
-    SA = suffix_array("banana");
+    SA = suffix_array(texto);
+    //std::string texto = "banana";
+    //SA = suffix_array(ejemplo);
     //std::cout << texto.size();
     
+    /*
     for(int i = 0; i<SA.size(); i++){
         std::cout << SA[i] << ", ";
     }
-
-    std::string ejemplo = "banana";
+    */
+    std::cout << std::endl;
     //search("a", ejemplo, SA, ejemplo.length());
-    
-
+    std::string patron = "Bram";
+    int index = search_substr(patron, texto, SA, texto.length());
+    std::cout<< "El index es: " << index 
+    << "\nLos caracteres son: " << texto.substr(index, patron.length());
     return 0;
 }
 

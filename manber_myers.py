@@ -40,6 +40,7 @@ def suffix_array(T):
 def search_substr(patron, texto, suffrray, N):
     L = 0  # low
     R = N - 1  # high
+    
     while L <= R:
         M = (R + L) // 2  # calcular el valor medio correctamente
         subTexto = texto[suffrray[M]: suffrray[M] + len(patron)]
@@ -53,16 +54,16 @@ def search_substr(patron, texto, suffrray, N):
     return -1
 
 
-filename = "Iliada.txt"
+filename = "Dracula.txt"
 with open(filename, encoding="utf8") as f:
     libro = f.read()
 
-ejemplo = "banana"
-SA = suffix_array(ejemplo)
+#ejemplo = "banana"
+SA = suffix_array(libro)
 #print(SA)
 
 #search("nana",ejemplo, SA, len(SA))
-pat = "ana"
-index = search_substr(pat,ejemplo, SA, len(SA))
-print(index)
-print(ejemplo[index:index+len(pat)])
+pat = "Bram"
+index = search_substr(pat,libro, SA, len(SA))
+print("El index es: ",index)
+print(libro[index:index+len(pat)])
