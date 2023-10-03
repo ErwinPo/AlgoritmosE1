@@ -5,6 +5,8 @@
 #include <tuple>
 #include <fstream>
 
+using namespace std;
+
 class SubstrRank{
 public:
     int left_rank;
@@ -18,9 +20,9 @@ public:
 
 };
 
-std::vector<int> make_ranks(std::vector<SubstrRank> &substr_rank, int n){
+vector<int> make_ranks(vector<SubstrRank> &substr_rank, int n){
     int r = 1;
-    std::vector<int> rank(n, -1);
+    vector<int> rank(n, -1);
     rank[substr_rank[0].index] = r;
 
     for(int i = 0; i<n; i++){
@@ -33,19 +35,19 @@ std::vector<int> make_ranks(std::vector<SubstrRank> &substr_rank, int n){
     return rank;
 }
 
-std::vector<int> suffix_array(std::string T){
+vector<int> suffix_array(string T){
     int n = T.length();
-    std::vector<int> rank;
+    vector<int> rank;
     int codigoCaracter, codigoCaracterSiguiente;
-    std::vector<SubstrRank> substr_rank;
+    vector<SubstrRank> substr_rank;
     for(int i = 0; i< n;i++){
         codigoCaracter = T[i];
         codigoCaracterSiguiente = T[i+1];
         substr_rank.push_back(SubstrRank(codigoCaracter,(i < n-1) ?  codigoCaracterSiguiente: 0, i));
     }
-    std::sort(substr_rank.begin(), substr_rank.end(), [](const SubstrRank& a, const SubstrRank& b) {
+    sort(substr_rank.begin(), substr_rank.end(), [](const SubstrRank& a, const SubstrRank& b) {
         // Ordenar primero por left_rank y luego por right_rank en caso de empate
-        return std::tie(a.left_rank, a.right_rank) < std::tie(b.left_rank, b.right_rank);
+        return tie(a.left_rank, a.right_rank) < tie(b.left_rank, b.right_rank);
     });
     int l = 2;
     while(l<n){
@@ -57,32 +59,37 @@ std::vector<int> suffix_array(std::string T){
         }
         l *= 2;
 
-        std::sort(substr_rank.begin(), substr_rank.end(), [](const SubstrRank& a, const SubstrRank& b) {
+        sort(substr_rank.begin(), substr_rank.end(), [](const SubstrRank& a, const SubstrRank& b) {
         // Ordenar primero por left_rank y luego por right_rank en caso de empate
-        return std::tie(a.left_rank, a.right_rank) < std::tie(b.left_rank, b.right_rank);
+        return tie(a.left_rank, a.right_rank) < tie(b.left_rank, b.right_rank);
         });
     }
 
-    std::vector<int> SA;
+    vector<int> SA;
     for(int i = 0; i<n; i++){
         SA.push_back(substr_rank[i].index);
     }
     return SA;
 }
 
-int search_substr(std::string patron, std::string texto, std::vector<int> &suffray, int N){
+vector<int> search_substr(string patron, string texto, vector<int> &suffray, int N){
     int M;
     int L = 0;
     int R = N-1;
-    std::string subTexto;
+    string subTexto;
     int tamanoPat = patron.length();
+    int index;
+    int firstocurrence;
+    vector<int> ocurrences;
     while (L<=R)
     {
         M = (R+L)/2;
         subTexto = texto.substr(suffray[M],tamanoPat);
         if(patron == subTexto){
-            //std::cout << subTexto << M << std::endl;
-            return suffray[M];
+            //cout << subTexto << M << endl;
+            index = suffray[M];
+            firstocurrence = suffray[M];
+            break;
         }
         else if(subTexto < patron){
             L = M + 1;
@@ -91,47 +98,72 @@ int search_substr(std::string patron, std::string texto, std::vector<int> &suffr
             R = M - 1; 
         }
     }
+    while(subTexto == patron){
+        M = M-1;
+        //cout << M << endl;
+        subTexto = texto.substr(suffray[M],tamanoPat);
+        //cout << subTexto << endl;
+        if(subTexto == patron){
+            firstocurrence = M;
+            index = suffray[firstocurrence];
+            //subTexto = texto.substr(suffray[M+1], tamanoPat);
+        }
+    }
+    M++;
+    subTexto = texto.substr(suffray[M],tamanoPat);
+    while(subTexto == patron){
+        M = M+1;
+        subTexto = texto.substr(suffray[M],tamanoPat);
+        if (subTexto == patron){
+            ocurrences.push_back(M);
+        }
+        cout << subTexto << endl;
+        cout << M << endl;
+    }
 
-    return -1;
+    return ocurrences;
     
 }
 
 
 int main(){
+    
+    string filename = "test.txt";
+    ifstream file(filename);
 
-    std::string filename = "Dracula.txt";
-    std::ifstream file(filename);
+    string texto;
 
-    std::string texto;
-
-    // Verifica si el archivo se ha abierto correctamente
+    //Verifica si el archivo se ha abierto correctamente
     if (file.is_open()) {
-        // Almacena el contenido del archivo en un std::string
-        std::string contenido((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+        // Almacena el contenido del archivo en un string
+        string contenido((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
         texto = contenido;
 
         // El archivo se cierra automáticamente cuando sale del ámbito
     } else {
-        std::cerr << "No se pudo abrir el archivo." << std::endl;
+        cerr << "No se pudo abrir el archivo." << endl;
     }
-    std::vector<int> SA;
+    vector<int> SA;
 
     SA = suffix_array(texto);
-    //std::string texto = "banana";
+    //string texto = "banana";
     //SA = suffix_array(ejemplo);
-    //std::cout << texto.size();
+    //cout << texto.size();
     
     /*
     for(int i = 0; i<SA.size(); i++){
-        std::cout << SA[i] << ", ";
+        cout << SA[i] << ", ";
     }
     */
-    std::cout << std::endl;
+    //texto = "abracadabra";
+    cout << endl;
     //search("a", ejemplo, SA, ejemplo.length());
-    std::string patron = "Bram";
-    int index = search_substr(patron, texto, SA, texto.length());
-    std::cout<< "El index es: " << index 
-    << "\nLos caracteres son: " << texto.substr(index, patron.length());
+    string patron = "th";
+    vector<int> indexes = search_substr(patron, texto, SA, texto.length());
+    for(int i = 0; i < indexes.size(); i++){
+        cout<< "El index numero " << i << " es: " << indexes[i] << endl;
+    }
+    cout<< "Los caracteres son: " << texto.substr(SA[indexes[1]], patron.length()) << endl;
     return 0;
 }
 
