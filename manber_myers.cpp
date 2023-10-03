@@ -5,8 +5,6 @@
 #include <tuple>
 #include <fstream>
 
-
-
 class SubstrRank{
 public:
     int left_rank;
@@ -20,7 +18,7 @@ public:
 
 };
 
-std::vector<int> make_ranks(std::vector<SubstrRank> substr_rank, int n){
+std::vector<int> make_ranks(std::vector<SubstrRank> &substr_rank, int n){
     int r = 1;
     std::vector<int> rank(n, -1);
     rank[substr_rank[0].index] = r;
@@ -72,6 +70,7 @@ std::vector<int> suffix_array(std::string T){
     return SA;
 }
 
+
 int main(){
 
     std::string filename = "Dracula.txt";
@@ -84,24 +83,24 @@ int main(){
         // Almacena el contenido del archivo en un std::string
         std::string contenido((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         texto = contenido;
-        // Muestra el contenido leído del archivo
-       //std::cout << "Contenido del archivo:\n" << contenido << std::endl;
 
         // El archivo se cierra automáticamente cuando sale del ámbito
     } else {
         std::cerr << "No se pudo abrir el archivo." << std::endl;
     }
     std::vector<int> SA;
-    //std::cout << texto;
 
     //SA = suffix_array(texto);
-    //SA = suffix_array("banana");
-    std::cout << texto.size();
-    /*
+    SA = suffix_array("banana");
+    //std::cout << texto.size();
+    
     for(int i = 0; i<SA.size(); i++){
         std::cout << SA[i] << ", ";
     }
-    */
+
+    std::string ejemplo = "banana";
+    //search("a", ejemplo, SA, ejemplo.length());
+    
 
     return 0;
 }

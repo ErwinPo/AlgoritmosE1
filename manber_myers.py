@@ -16,17 +16,15 @@ def make_ranks(substr_rank, n):
     return rank
 
 def suffix_array(T):
-    #print(type(T))
+    
     n = len(T)
     substr_rank = []
-    #print(type(substr_rank))
     for i in range(n):
         substr_rank.append(SubstrRank(ord(T[i]), ord(T[i + 1]) if i < n-1 else 0, i))
     substr_rank.sort(key=lambda sr: (sr.left_rank, sr.right_rank))
     l = 2
     while l < n:
         rank = make_ranks(substr_rank, n)
-
         for i in range(n):
             substr_rank[i].left_rank = rank[i]
             substr_rank[i].right_rank = rank[i+l] if i+l < n else 0
@@ -36,15 +34,35 @@ def suffix_array(T):
         substr_rank.sort(key=lambda sr: (sr.left_rank, sr.right_rank))
 
     SA = [substr_rank[i].index for i in range(n)]
-    print(type(SA))
     return SA
 
-filename = "Dracula.txt"
-with open(filename, encoding="utf8") as f:
-    lines = f.read()
 
-#SA = suffix_array("banana")
-#print(len(SA))
-#SA = suffix_array(lines)
+def search_substr(patron, texto, suffrray, N):
+    L = 0  # low
+    R = N - 1  # high
+    while L <= R:
+        M = (R + L) // 2  # calcular el valor medio correctamente
+        subTexto = texto[suffrray[M]: suffrray[M] + len(patron)]
+        if patron == subTexto:
+            return suffrray[M]
+        elif subTexto < patron:
+            L = M + 1
+        else:
+            R = M - 1 
+    
+    return -1
+
+
+filename = "Iliada.txt"
+with open(filename, encoding="utf8") as f:
+    libro = f.read()
+
+ejemplo = "banana"
+SA = suffix_array(ejemplo)
 #print(SA)
-print(len(lines))
+
+#search("nana",ejemplo, SA, len(SA))
+pat = "ana"
+index = search_substr(pat,ejemplo, SA, len(SA))
+print(index)
+print(ejemplo[index:index+len(pat)])
