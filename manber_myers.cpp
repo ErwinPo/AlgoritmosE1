@@ -117,8 +117,6 @@ vector<int> search_substr(string patron, string texto, vector<int> &suffray, int
         if (subTexto == patron){
             ocurrences.push_back(M);
         }
-        cout << subTexto << endl;
-        cout << M << endl;
     }
 
     return ocurrences;
@@ -128,7 +126,7 @@ vector<int> search_substr(string patron, string texto, vector<int> &suffray, int
 
 int main(){
     
-    string filename = "test.txt";
+    string filename = "Dracula.txt";
     ifstream file(filename);
 
     string texto;
@@ -158,7 +156,7 @@ int main(){
     //texto = "abracadabra";
     cout << endl;
     //search("a", ejemplo, SA, ejemplo.length());
-    string patron = "th";
+    string patron = "Dracula";
     vector<int> indexes = search_substr(patron, texto, SA, texto.length());
     for(int i = 0; i < indexes.size(); i++){
         cout<< "El index numero " << i << " es: " << indexes[i] << endl;
