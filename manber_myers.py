@@ -1,7 +1,7 @@
 import time
-
-
-
+import numpy as np
+from memory_profiler import memory_usage
+import pylab as pl
 class SubstrRank:
     def __init__(self, left_rank=0, right_rank=0, index=0):
         self.left_rank = left_rank
@@ -18,7 +18,6 @@ def make_ranks(substr_rank, n):
             r += 1
         rank[substr_rank[i].index] = r
     return rank
-
 
 def suffix_array(T):
     
@@ -62,28 +61,16 @@ def search_substr(patron, texto, suffrray, N):
 filename = "Shakespeare.txt"
 with open(filename, encoding="utf8") as f:
     libro = f.read()
-
-
-
-# Guarda el tiempo de inicio
-inicio = time.time()
-
-
-#ejemplo = "banana"
+start=time.time()
+#Se mide el tiempo de ejecucion
 SA = suffix_array(libro)
-#print(SA)
-
-# Guarda el tiempo de finalización
-fin = time.time()
-
-# Calcula el tiempo de ejecución en segundos
-tiempo_ejecucion = fin - inicio
-
-print("Tiempo de ejecucion: ",round(tiempo_ejecucion,2), " segundos")
-#search("nana",ejemplo, SA, len(SA))
-'''
-pat = "Bram"
-index = search_substr(pat,libro, SA, len(SA))
-print("El index es: ",index)
-print(libro[index:index+len(pat)])
-'''
+end=time.time()
+#e imprime el tiempo de ejecucion
+print("Tiempo de ejecucion: ", (end-start))
+#Uso de memoria
+memoryUsage=memory_usage((suffix_array,(libro, )),interval=0.01)
+pl.plot(np.arange(len(memoryUsage)) *0.1, memoryUsage, label='SA-IS Algorithm')
+pl.title('Consumo de Memoria')
+pl.xlabel('Tiempo (s)')
+pl.ylabel('Uso de memoria (MB)')
+pl.show()

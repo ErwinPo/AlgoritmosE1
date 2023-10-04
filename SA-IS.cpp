@@ -244,9 +244,9 @@ int main(){
     cout<<"\nTiempo de Ejecución (segundos): "<<tiempoEjec<<endl;
     cout<<endl;
     string patron;
-    cout<<"Introduzca el patron a buscar: \n";
-    cin >> patron;
+    cout<<"Ingrese palabra a buscar: "<<endl;
+    cin>>patron;
     vector<int>ocurrencias=search_substr(patron,text,SA,text.size());
-    cout<<"ocurrencias del patron: "<<ocurrencias.size()<<endl;
+    cout<<"ocurrencias de "<<patron<<":"<<ocurrencias.size()<<endl;
     return 0; 
 }
