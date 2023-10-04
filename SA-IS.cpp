@@ -243,7 +243,10 @@ int main(){
         cout<<SA[i]<<" ";
     cout<<"\nTiempo de Ejecución (segundos): "<<tiempoEjec<<endl;
     cout<<endl;
-    vector<int>ocurrencias=search_substr("Dracula",text,SA,text.size());
-    cout<<"ocurrencias de Dracula: "<<ocurrencias.size()<<endl;
+    string patron;
+    cout<<"Introduzca el patron a buscar: \n";
+    cin >> patron;
+    vector<int>ocurrencias=search_substr(patron,text,SA,text.size());
+    cout<<"ocurrencias del patron: "<<ocurrencias.size()<<endl;
     return 0; 
 }

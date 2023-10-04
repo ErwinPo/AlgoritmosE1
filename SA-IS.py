@@ -103,7 +103,7 @@ def openFile(filename):
     f=open(filename,encoding="utf8")
     return f.read()
 if __name__=='__main__':    
-    string=openFile("Dracula.txt")
+    string=openFile("war.txt")
     T=[ord(c) for c in string]
     T.append(0)
     start=time.time()

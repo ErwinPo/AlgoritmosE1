@@ -129,7 +129,9 @@ vector<int> search_substr(string patron, string &texto, vector<int> &suffray, in
 
 int main(){
     
-    string filename = "Dracula.txt";
+    string filename;
+    cout<<"Introduzca el libro: \n";
+    cin >> filename;
     ifstream file(filename);
 
     string texto;
@@ -157,7 +159,9 @@ int main(){
     std::cout << "Tiempo de ejecución: " << elapsed << " segundos" << std::endl;
     //search("a", ejemplo, SA, ejemplo.length());
     
-    string patron = "Dracula";
+    string patron;
+    cout<<"Introduzca el patron a buscar: \n";
+    cin >> patron;
     vector<int> indexes = search_substr(patron, texto, SA, texto.length());
 
     if(indexes.size() == 0){
