@@ -174,6 +174,56 @@ string ReadFile(string lib){
     file.close();
     return texto;
 }
+vector<int> search_substr(string patron, string texto, vector<int> &suffray, int N){
+    int M;
+    int L = 0;
+    int R = N-1;
+    string subTexto;
+    int tamanoPat = patron.length();
+    int index;
+    int firstocurrence;
+    vector<int> ocurrences;
+    while (L<=R)
+    {
+        M = (R+L)/2;
+        subTexto = texto.substr(suffray[M],tamanoPat);
+        if(patron == subTexto){
+            //cout << subTexto << M << endl;
+            index = suffray[M];
+            firstocurrence = suffray[M];
+            break;
+        }
+        else if(subTexto < patron){
+            L = M + 1;
+        }
+        else{
+            R = M - 1; 
+        }
+    }
+    while(subTexto == patron){
+        M = M-1;
+        //cout << M << endl;
+        subTexto = texto.substr(suffray[M],tamanoPat);
+        //cout << subTexto << endl;
+        if(subTexto == patron){
+            firstocurrence = M;
+            index = suffray[firstocurrence];
+            //subTexto = texto.substr(suffray[M+1], tamanoPat);
+        }
+    }
+    M++;
+    subTexto = texto.substr(suffray[M],tamanoPat);
+    while(subTexto == patron){
+        subTexto = texto.substr(suffray[M],tamanoPat);
+        if (subTexto == patron){
+            ocurrences.push_back(M);
+        }
+        M = M+1;
+    }
+
+    return ocurrences;
+    
+}
 
 int main(){
     //Se introduce el nombre del archivo
@@ -184,10 +234,16 @@ int main(){
     string text=ReadFile(nlibro);
     vector<int> T(text.begin(),text.end());
     T.push_back(0);
-  
+    clock_t start=clock();
     vector<int> SA=sais(T);
+    clock_t end=clock();
+    cout<<"***ALGORITMO SA-IS**"<<endl;
+    double tiempoEjec=static_cast<double>(end-start)/CLOCKS_PER_SEC;
     for(int i=0;i<SA.size();i++)
         cout<<SA[i]<<" ";
+    cout<<"\nTiempo de Ejecución (segundos): "<<tiempoEjec<<endl;
     cout<<endl;
+    vector<int>ocurrencias=search_substr("Dracula",text,SA,text.size());
+    cout<<"ocurrencias de Dracula: "<<ocurrencias.size()<<endl;
     return 0; 
 }
