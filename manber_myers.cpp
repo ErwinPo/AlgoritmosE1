@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <tuple>
 #include <fstream>
+#include <ctime>
+
+
 
 using namespace std;
 
@@ -35,7 +38,7 @@ vector<int> make_ranks(vector<SubstrRank> &substr_rank, int n){
     return rank;
 }
 
-vector<int> suffix_array(string T){
+vector<int> suffix_array(string &T){
     int n = T.length();
     vector<int> rank;
     int codigoCaracter, codigoCaracterSiguiente;
@@ -72,7 +75,7 @@ vector<int> suffix_array(string T){
     return SA;
 }
 
-vector<int> search_substr(string patron, string texto, vector<int> &suffray, int N){
+vector<int> search_substr(string patron, string &texto, vector<int> &suffray, int N){
     int M;
     int L = 0;
     int R = N-1;
@@ -126,7 +129,7 @@ vector<int> search_substr(string patron, string texto, vector<int> &suffray, int
 
 int main(){
     
-    string filename = "Dracula.txt";
+    string filename = "war.txt";
     ifstream file(filename);
 
     string texto;
@@ -141,27 +144,28 @@ int main(){
     } else {
         cerr << "No se pudo abrir el archivo." << endl;
     }
+    file.close();
     vector<int> SA;
 
-    SA = suffix_array(texto);
-    //string texto = "banana";
-    //SA = suffix_array(ejemplo);
-    //cout << texto.size();
+    std::clock_t start = std::clock();
     
-    /*
-    for(int i = 0; i<SA.size(); i++){
-        cout << SA[i] << ", ";
-    }
-    */
-    //texto = "abracadabra";
+
+    SA = suffix_array(texto);
     cout << endl;
+    std::clock_t end = std::clock();
+    double elapsed = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+    std::cout << "Tiempo de ejecución: " << elapsed << " segundos" << std::endl;
     //search("a", ejemplo, SA, ejemplo.length());
-    string patron = "Dracula";
+    
+    string patron = "Nicholas";
     vector<int> indexes = search_substr(patron, texto, SA, texto.length());
     for(int i = 0; i < indexes.size(); i++){
         cout<< "El index numero " << i << " es: " << indexes[i] << endl;
+        cout<< "El index numero " << indexes[i] << " es: " << texto.substr(SA[indexes[0]], patron.length()) << endl;
     }
-    cout<< "Los caracteres son: " << texto.substr(SA[indexes[1]], patron.length()) << endl;
+    
+    //cout<< "Los caracteres son: " << texto.substr(SA[indexes[0]], patron.length()) << endl;
+    
     return 0;
 }
 

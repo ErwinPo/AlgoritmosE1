@@ -1,3 +1,4 @@
+.gitignore
 manber_myers.exe
 .vscode
 pruebas.cpp
@@ -6,3 +7,6 @@ huffman.py
 pruebas.exe
 SA-IS.exe
 SA-IS.cpp
+Shakespeare.txt
+war.txt
+
